@@ -1,1 +1,0 @@
-sudo apt install update -y && sudo apt upgrade -y
