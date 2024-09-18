@@ -9,7 +9,7 @@
 // 6. Implement Proper Concatenation in Jenkinsfile & include single variable instead of mentioning concatenation each time
 // 7. Deploy VM to run this pipeline
 // 8. Implement on Git Push & Pull requests
-// 9. Add output of pipeline @ CI-Ending
+// 9. Add Result output of pipeline to echo in or after CI-Ending ~ Last Step
 
 pipeline {
     agent any
