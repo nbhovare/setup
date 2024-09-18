@@ -25,7 +25,7 @@ pipeline {
         DOCKER_REPO = "nihalblog25"
         DOCKER_IMAGE_VERSION = "latest"
         DOCKER_USER_NAME = "nihalblog25"
-        DOCKER_TOKEN = "dckr_pat_SX6wdHs3ssm416VHuUbo5l87A7c"
+        DOCKER_TOKEN = "token"
     }
 
     // Required Params
