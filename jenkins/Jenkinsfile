@@ -60,7 +60,7 @@ pipeline {
                 // Tag & build in single command if want please split
                 // docker image name in following format
                                 // <your_dockerhub_username>/<repository_name>:<tag>
-                sh "docker build -t Docker Image Name - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
+                sh "sudo docker build -t Docker Image Name - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
             }
         }
 
@@ -69,7 +69,7 @@ pipeline {
             echo "Upload Image to Hub"
 
             // docker push <your_dockerhub_username>/<repository_name>:<tag>
-            sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+            sh "sudo docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
 
             echo "Docker Image Name - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
         }
