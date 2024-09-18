@@ -1,24 +1,43 @@
 // Jenkins File for Pipeline
 
-
-// Todos
-// 1. Makes Branch choices dynamically updated : fetch from github
+// Todos ~ Delete after Implemented Successfully
+// 1. Makes Branch choices dynamically updated : fetch from github all branch name and let executor choose which branch to deploy
 // 2. Add Service folder functionality
 // 3. Try out more parameters
+// 4. Fetch all git repo select repo then select branch of choice to deploy.......
+// 5. Multi line command instead of multiple sh lines
+// 6. Implement Proper Concatenation in Jenkinsfile & include single variable instead of mentioning concatenation each time
 
 pipeline {
     agent any
+
+    // Declare tools used by this pipeline
+    tools {
+
+    }
     environment {
         GIT_URL = "git@github.com:nbhovare/setup.git"
+        DOCKER_REPO = "nbhovare"
+        DOCKER_IMAGE_VERSION = "latest"
     }
+
+    // Required Params
     parameters {
         string ( name: "NAME", description: "Your Name for Logging: " )
-        choice ( name: "BRANCH", choices: ["feat/*", "Main"], description: "Select Branch to deploy from" )
+
+        // Make it more interactive by applying todos.1
+        string ( name: "BRANCH", description: "Enter Branch to deploy from: " )
+        //choice ( name: "BRANCH", choices: ["feat/*", "Main"], description: "Select Branch to deploy from" )
+        // & maybe also include todos.4 
+        //choice ( name: "BRANCH", choices: ["feat/*", "Main"], description: "Select Branch to deploy from" )
+
+        string ( name: "DOCKER_IMAGE_NAME", description: "Docker Image Name/tag, Adhere to Company Standard for Naming conventions" )
     }
     stages {
         stage ("CI-Starting") {
             steps {
                 echo "CI-Starting"
+                echo 'Executed BY: ${params.NAME}'
             }
         }
 
@@ -27,6 +46,27 @@ pipeline {
                 echo "Git Checkout"
                 git branch: '${params.BRANCH}', url: '${GIT_URL}'
             }
+        }
+
+        stage ("Docker Build") {
+            steps {
+                echo "Docker Build"
+                echo "Note: Always put Dockerfile in root directory of project folders"
+
+                // Implement todos.5
+                // Tag & build in single command if want please split
+                // docker image name in following format
+                                // <your_dockerhub_username>/<repository_name>:<tag>
+                sh 'docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} .'
+            }
+        }
+
+        stage ("Docker Image to Hub") {
+
+            echo "Upload Image to Hub"
+
+            // docker push <your_dockerhub_username>/<repository_name>:<tag>
+            sh 'docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}'
         }
 
         stage ("CI-Ending") {
