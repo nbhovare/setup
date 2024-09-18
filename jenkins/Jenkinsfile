@@ -40,7 +40,7 @@ pipeline {
         stage ("CI-Starting") {
             steps {
                 echo "CI-Starting"
-                echo 'Executed BY: ${params.NAME}'
+                echo "Executed BY: ${params.NAME}"
             }
         }
 
