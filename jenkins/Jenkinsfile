@@ -10,18 +10,22 @@
 // 7. Deploy VM to run this pipeline
 // 8. Implement on Git Push & Pull requests
 // 9. Add Result output of pipeline to echo in or after CI-Ending ~ Last Step
+// 10. Remove hordcoded password token from this Jenkinsfile, find alternative for fetching from jenkins secrets
 
 pipeline {
     agent any
 
-    // Declare tools used by this pipeline
-    tools {
-
+    /* tools {
+        Tools here
     }
+    */
+
     environment {
-        GIT_URL = "git@github.com:nbhovare/setup.git"
-        DOCKER_REPO = "nbhovare"
+        GIT_URL = "https://github.com/nbhovare/setup.git"
+        DOCKER_REPO = "nihalblog25"
         DOCKER_IMAGE_VERSION = "latest"
+        DOCKER_USER_NAME = "nihalblog25"
+        DOCKER_TOKEN = "dckr_pat_SX6wdHs3ssm416VHuUbo5l87A7c"
     }
 
     // Required Params
@@ -60,18 +64,34 @@ pipeline {
                 // Tag & build in single command if want please split
                 // docker image name in following format
                                 // <your_dockerhub_username>/<repository_name>:<tag>
-                sh "sudo docker build -t Docker Image Name - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
+                                
+                echo "Building Docker Image with tags - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+                sh "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
+            }
+        }
+        
+        stage ("Docker login") {
+            steps {
+                echo "Docker Login"
+
+                // todos.10
+                sh "docker login -u ${DOCKER_USER_NAME} -p ${DOCKER_TOKEN}"
             }
         }
 
         stage ("Docker Image to Hub") {
 
-            echo "Upload Image to Hub"
+            steps {
+                echo "Upload Image to Hub"
+    
+                // docker push <your_dockerhub_username>/<repository_name>:<tag>
+                sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+            }
+        }
 
-            // docker push <your_dockerhub_username>/<repository_name>:<tag>
-            sh "sudo docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
-
-            echo "Docker Image Name - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+        stage ("Docker Logout") {
+            echo "Docker Logout"
+            sh "docker logout"
         }
 
         stage ("CI-Ending") {
