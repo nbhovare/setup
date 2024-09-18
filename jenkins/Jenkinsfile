@@ -1,4 +1,10 @@
-# Jenkins File for Pipeline
+// Jenkins File for Pipeline
+
+
+// Todos
+// 1. Makes Branch choices dynamically updated : fetch from github
+// 2. Add Service folder functionality
+// 3. Try out more parameters
 
 pipeline {
     agent any
@@ -7,7 +13,7 @@ pipeline {
     }
     parameters {
         string ( name: "NAME", description: "Your Name for Logging: " )
-        choice ( name: "BRANCH", choices: ["Main", "feat/*"], description: "Select Branch to deploy from" )
+        choice ( name: "BRANCH", choices: ["feat/*", "Main"], description: "Select Branch to deploy from" )
     }
     stages {
         stage ("CI-Starting") {
@@ -16,7 +22,7 @@ pipeline {
             }
         }
 
-        stage ("Git CHeckout") {
+        stage ("Git Checkout") {
             steps {
                 echo "Git Checkout"
                 git branch: '${params.BRANCH}', url: '${GIT_URL}'
