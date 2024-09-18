@@ -1,0 +1,32 @@
+# Jenkins File for Pipeline
+
+pipeline {
+    agent any
+    environment {
+        GIT_URL = "git@github.com:nbhovare/setup.git"
+    }
+    parameters {
+        string ( name: "NAME", description: "Your Name for Logging: " )
+        choice ( name: "BRANCH", choices: ["Main", "feat/*"], description: "Select Branch to deploy from" )
+    }
+    stages {
+        stage ("CI-Starting") {
+            steps {
+                echo "CI-Starting"
+            }
+        }
+
+        stage ("Git CHeckout") {
+            steps {
+                echo "Git Checkout"
+                git branch: '${params.BRANCH}', url: '${GIT_URL}'
+            }
+        }
+
+        stage ("CI-Ending") {
+            steps {
+                echo "CI-Ending"
+            }
+        }
+    }
+}
