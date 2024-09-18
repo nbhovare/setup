@@ -7,7 +7,7 @@
 
 # Update System
 # Start of file do not write anything above this write below
-sudo apt install update -y && sudo apt upgrade -y
+sudo apt update -y && sudo apt upgrade -y
 
 ######### Your Code Here #############
 
@@ -20,4 +20,4 @@ sudo sh jenkins.sh
 ######### Your Code Here #############
 
 # End of file do not write anything beyond this write above
-sudo apt install update -y && sudo apt upgrade -y
+sudo apt update -y && sudo apt upgrade -y
