@@ -7,6 +7,9 @@
 // 4. Fetch all git repo select repo then select branch of choice to deploy.......
 // 5. Multi line command instead of multiple sh lines
 // 6. Implement Proper Concatenation in Jenkinsfile & include single variable instead of mentioning concatenation each time
+// 7. Deploy VM to run this pipeline
+// 8. Implement on Git Push & Pull requests
+// 9. Add output of pipeline @ CI-Ending
 
 pipeline {
     agent any
@@ -67,6 +70,8 @@ pipeline {
 
             // docker push <your_dockerhub_username>/<repository_name>:<tag>
             sh 'docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}'
+
+            echo 'Docker Image Name - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}'
         }
 
         stage ("CI-Ending") {
