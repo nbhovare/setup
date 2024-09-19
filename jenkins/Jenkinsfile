@@ -22,8 +22,6 @@ pipeline {
     environment {
         GIT_URL = "https://github.com/nbhovare/setup.git"
         DOCKER_REPO = "nihalblog25"
-        DOCKER_IMAGE_VERSION = "v1.3"
-        DOCKER_USER_NAME = "nihalblog25"
     }
 
     // Required Params
@@ -56,8 +54,6 @@ pipeline {
         stage ("Docker Build, Tag & Push Docker Image to DockerHub") {
 
             steps {
-                
-                echo "123_test"
                 // This step should not normally be used in your script. Consult the inline help for details.
 
                 //withCredentials([string(credentialsId: 'docker_access_token', variable: 'jenkins-cicd-accesstoken')]) {
@@ -65,12 +61,12 @@ pipeline {
                 withDockerRegistry(url: '', credentialsId: 'jenkins-token') {
                     echo "Note: Always put Dockerfile in root directory of project folders"
                     
-                    echo "Building Docker Image with tags - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+                    echo "Building Docker Image with tags - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
                     
-                    sh "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
+                    sh "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER ."
                 
                     // docker push <your_dockerhub_username>/<repository_name>:<tag>
-                    sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+                    sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
                 }
             }
         }
