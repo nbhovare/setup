@@ -11,7 +11,7 @@ sudo apt update -y && sudo apt upgrade -y
 
 ######### Your Code Here #############
 
-# Install Pre-Required packages
+# Install Pre-Required packages ~ Always place other files below this file that's why its names as Pre-Requisite
 sudo sh pre.sh
 
 # Install Jenkins
