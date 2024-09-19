@@ -10,7 +10,6 @@
 // 7. Deploy VM to run this pipeline
 // 8. Implement on Git Push & Pull requests
 // 9. Add Result output of pipeline to echo in or after CI-Ending ~ Last Step
-// 10. Remove hardcoded password token from this Jenkinsfile, find alternative for fetching from jenkins secrets
 
 pipeline {
     agent any
@@ -23,9 +22,8 @@ pipeline {
     environment {
         GIT_URL = "https://github.com/nbhovare/setup.git"
         DOCKER_REPO = "nihalblog25"
-        DOCKER_IMAGE_VERSION = "latest"
+        DOCKER_IMAGE_VERSION = "v1.3"
         DOCKER_USER_NAME = "nihalblog25"
-        DOCKER_TOKEN = "token"
     }
 
     // Required Params
@@ -55,45 +53,28 @@ pipeline {
             }
         }
 
-        stage ("Docker Build") {
-            steps {
-                echo "Docker Build"
-                echo "Note: Always put Dockerfile in root directory of project folders"
+        stage ("Docker Build, Tag & Push Docker Image to DockerHub") {
 
-                // Implement todos.5
-                // Tag & build in single command if want please split
-                // docker image name in following format
-                                // <your_dockerhub_username>/<repository_name>:<tag>
-                                
-                echo "Building Docker Image with tags - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
-                sh "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
+            steps {
+                
+                echo "123_test"
+                // This step should not normally be used in your script. Consult the inline help for details.
+
+                //withCredentials([string(credentialsId: 'docker_access_token', variable: 'jenkins-cicd-accesstoken')]) {
+                // Use Docker with Token instead of hardcoding password token or username & Password in Jenkinsfile
+                withDockerRegistry(url: '', credentialsId: 'jenkins-token') {
+                    echo "Note: Always put Dockerfile in root directory of project folders"
+                    
+                    echo "Building Docker Image with tags - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+                    
+                    sh "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION} ."
+                
+                    // docker push <your_dockerhub_username>/<repository_name>:<tag>
+                    sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
+                }
             }
         }
         
-        stage ("Docker login") {
-            steps {
-                echo "Docker Login"
-
-                // todos.10
-                sh "docker login -u ${DOCKER_USER_NAME} -p ${DOCKER_TOKEN}"
-            }
-        }
-
-        stage ("Docker Image to Hub") {
-
-            steps {
-                echo "Upload Image to Hub"
-    
-                // docker push <your_dockerhub_username>/<repository_name>:<tag>
-                sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_VERSION}"
-            }
-        }
-
-        stage ("Docker Logout") {
-            echo "Docker Logout"
-            sh "docker logout"
-        }
-
         stage ("CI-Ending") {
             steps {
                 echo "CI-Ending"
