@@ -10,7 +10,7 @@
 // 7. Deploy VM to run this pipeline
 // 8. Implement on Git Push & Pull requests
 // 9. Add Result output of pipeline to echo in or after CI-Ending ~ Last Step
-// 10. Remove hordcoded password token from this Jenkinsfile, find alternative for fetching from jenkins secrets
+// 10. Remove hardcoded password token from this Jenkinsfile, find alternative for fetching from jenkins secrets
 
 pipeline {
     agent any
