@@ -23,10 +23,10 @@ fi
 if [ "$(systemctl is-active docker)" = "inactive" ]; then
     echo "Docker Not Found, Installing................"
     echo "Docker not installed, installing docker"
-    apt install docker.io -y
+    sudo apt install docker.io -y
 fi
 
 sudo systemctl stop jenkins
 # add Jenkins user to docker group
-sudo usermod -aG docker Jenkins
+sudo usermod -aG docker jenkins
 sudo systemctl start jenkins
