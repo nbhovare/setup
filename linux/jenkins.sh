@@ -1,6 +1,6 @@
 # Installation for Jenkins in ubuntu
 
-if [ "systemctl is-active jenkins" = "inactive" ] then
+if [ "$(systemctl is-active jenkins)" = "inactive" ]; then
     echo "Jenkins Not Found, Installing................"
     sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
     https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
@@ -20,7 +20,7 @@ fi
 // This Project Required Jenkins to have docker Installed 
 // check if docker is installed or not if not Install Docker & add Jenkins user to docker group
 
-if [ "systemctl is-active docker" = "inactive" ] then
+if [ "$(systemctl is-active docker)" = "inactive" ]; then
     echo "Docker Not Found, Installing................"
     echo "Docker not installed, installing docker"
     apt install docker.io -y
