@@ -17,8 +17,8 @@ if [ "$(systemctl is-active jenkins)" = "inactive" ]; then
     sudo systemctl start jenkins
 fi
 
-// This Project Required Jenkins to have docker Installed 
-// check if docker is installed or not if not Install Docker & add Jenkins user to docker group
+# This Project Required Jenkins to have docker Installed 
+# check if docker is installed or not if not Install Docker & add Jenkins user to docker group
 
 if [ "$(systemctl is-active docker)" = "inactive" ]; then
     echo "Docker Not Found, Installing................"
