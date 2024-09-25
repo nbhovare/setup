@@ -2,8 +2,7 @@
 
 // Todos ~ Delete after Implemented Successfully
 // 1. Makes Branch choices dynamically updated : fetch from github all branch name and let executor choose which branch to deploy
-// 2. Add Service folder functionality
-// 3. Try out more parameters
+// 2. Add Service folder functionality ~ added command sh "ls -d */ | cut -f1 -d '/'" for listing dir
 // 4. Fetch all git repo select repo then select branch of choice to deploy.......
 // 6. Implement Proper Concatenation in Jenkinsfile & include single variable instead of mentioning concatenation each time
 // 7. Deploy VM to run this pipeline
@@ -47,12 +46,12 @@ pipeline {
             steps {
                 echo "Git Checkout"
                 git branch: "${params.BRANCH}", url: "${GIT_URL}"
+                sh "pwd"
             }
         }
-
-        stage ("List Dir") {
+        stage ("List Dir in current git workspace"){
             steps {
-                // List all dir in current git workspace
+                echo "Dir Listed Below in current git workspace"
                 sh "ls -d */ | cut -f1 -d '/'"
             }
         }
@@ -70,8 +69,8 @@ pipeline {
                     echo "Building Docker Image with tags - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
                     
                     sh '''
-                        "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER ."                                
-                        sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
+                        docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER ."
+                        docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
                     '''
                 }
             }
