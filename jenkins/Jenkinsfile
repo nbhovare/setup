@@ -5,7 +5,6 @@
 // 2. Add Service folder functionality
 // 3. Try out more parameters
 // 4. Fetch all git repo select repo then select branch of choice to deploy.......
-// 5. Multi line command instead of multiple sh lines
 // 6. Implement Proper Concatenation in Jenkinsfile & include single variable instead of mentioning concatenation each time
 // 7. Deploy VM to run this pipeline
 // 8. Implement on Git Push & Pull requests
@@ -63,10 +62,10 @@ pipeline {
                     
                     echo "Building Docker Image with tags - ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
                     
-                    sh "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER ."
-                
-                    // docker push <your_dockerhub_username>/<repository_name>:<tag>
-                    sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
+                    sh '''
+                        "docker build -t ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER ."                                
+                        sh "docker push ${DOCKER_REPO}/${params.DOCKER_IMAGE_NAME}:v$BUILD_NUMBER"
+                    '''
                 }
             }
         }
