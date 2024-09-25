@@ -50,6 +50,13 @@ pipeline {
             }
         }
 
+        stage ("List Dir") {
+            steps {
+                // List all dir in current git workspace
+                sh "ls -d */ | cut -f1 -d '/'"
+            }
+        }
+
         stage ("Docker Build, Tag & Push Docker Image to DockerHub") {
 
             steps {
